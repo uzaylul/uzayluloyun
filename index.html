@@ -14,6 +14,7 @@
             --text-color: #f0f0f0;
             --text-secondary: #b0b0b0;
             --border-color: #333;
+            --link-color: #5d8ab2;
         }
         
         * {
@@ -193,20 +194,49 @@
             color: white;
         }
         
+        .card-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-left: 10px;
+        }
+        
+        .copy-btn, .link-btn {
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            white-space: nowrap;
+        }
+        
         .copy-btn {
             background-color: rgba(178, 119, 93, 0.2);
             color: var(--primary-color);
             border: 1px solid var(--primary-color);
-            border-radius: 6px;
-            padding: 8px 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            flex-shrink: 0;
         }
         
         .copy-btn:hover {
             background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .link-btn {
+            background-color: rgba(93, 138, 178, 0.2);
+            color: var(--link-color);
+            border: 1px solid var(--link-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .link-btn:hover {
+            background-color: var(--link-color);
             color: white;
             transform: scale(1.05);
         }
@@ -242,6 +272,27 @@
             
             .profile-card:hover {
                 transform: translateY(-8px) scale(1.03);
+            }
+            
+            .card-actions {
+                flex-direction: row;
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .profile-card {
+                flex-wrap: wrap;
+            }
+            
+            .platform-icon {
+                margin-bottom: 10px;
+            }
+            
+            .profile-info {
+                width: 100%;
+                margin-bottom: 10px;
             }
         }
         
@@ -297,21 +348,21 @@
     </div>
     
     <script>
-        // Profil verileri
+        // Profil verileri (linkler eklendi)
         const profiles = [
-            { platform: "Epic Games", username: "uzaylul", icon: "E" },
-            { platform: "Steam", username: "uzaylul", icon: "S" },
-            { platform: "Itch.io", username: "uzaylul", icon: "I" },
-            { platform: "Minecraft", username: "uzaylul", icon: "M" },
-            { platform: "Roblox", username: "uzaylul", icon: "R" },
-            { platform: "Battle.net", username: "uzaylul#2120", icon: "B" },
-            { platform: "EA", username: "uzaylul", icon: "E" },
-            { platform: "GOG", username: "uzaylul", icon: "G" },
-            { platform: "Riot", username: "uzaylul#000", icon: "R" },
-            { platform: "Rockstar Games", username: "uzaylul", icon: "R" },
-            { platform: "Ubisoft", username: "uzaylul", icon: "U" },
-            { platform: "Xbox", username: "uzaylul", icon: "X" },
-            { platform: "PSN", username: "uzaylul", icon: "P" }
+            { platform: "Epic Games", username: "uzaylul", icon: "E", link: "" },
+            { platform: "Steam", username: "uzaylul", icon: "S", link: "https://steamcommunity.com/id/uzaylul" },
+            { platform: "Itch.io", username: "uzaylul", icon: "I", link: "https://uzaylul.itch.io" },
+            { platform: "Minecraft", username: "uzaylul", icon: "M", link: "https://namemc.com/profile/uzaylul.1" },
+            { platform: "Roblox", username: "uzaylul", icon: "R", link: "https://roblox.com/users/122482369" },
+            { platform: "Battle.net", username: "uzaylul#2120", icon: "B", link: "" },
+            { platform: "EA", username: "uzaylul", icon: "E", link: "" },
+            { platform: "GOG", username: "uzaylul", icon: "G", link: "https://gog.com/u/uzaylul" },
+            { platform: "Riot", username: "uzaylul#000", icon: "R", link: "" },
+            { platform: "Rockstar Games", username: "uzaylul", icon: "R", link: "https://socialclub.rockstargames.com/member/uzaylul" },
+            { platform: "Ubisoft", username: "uzaylul", icon: "U", link: "" },
+            { platform: "Xbox", username: "uzaylul", icon: "X", link: "https://xboxgamertag.com/search/uzaylul" },
+            { platform: "PSN", username: "uzaylul", icon: "P", link: "https://psnprofiles.com/uzaylul" }
         ];
         
         // DOM elementleri
@@ -325,13 +376,23 @@
                 const card = document.createElement('div');
                 card.className = 'profile-card';
                 
+                // Link butonu için HTML
+                const linkButton = profile.link 
+                    ? `<a href="${profile.link}" target="_blank" class="link-btn">
+                          <i class="fas fa-external-link-alt"></i> Profil
+                       </a>`
+                    : '';
+                
                 card.innerHTML = `
                     <div class="platform-icon">${profile.icon}</div>
                     <div class="profile-info">
                         <div class="platform-name">${profile.platform}</div>
                         <div class="username">${profile.username}</div>
                     </div>
-                    <button class="copy-btn" data-username="${profile.username}">Kopyala</button>
+                    <div class="card-actions">
+                        <button class="copy-btn" data-username="${profile.username}">Kopyala</button>
+                        ${linkButton}
+                    </div>
                 `;
                 
                 profilesContainer.appendChild(card);
